@@ -13,6 +13,42 @@ source("setup.R")
 
 ```{r}
 data("knz_bison")
+view(knz_bison)
+```
+
+1.  Create a new column in the bison dataset that calculates the individual's age at the time of observation.
+```{r}
+knz_bison <- knz_bison %>%
+  mutate(age_at_observation = rec_year - animal_yob)
+ view(knz_bison)
+```
+
+2.  Write a function that will first filter the bison dataset based on any user-specified weight threshold (returning the filtered dataset).
+```{r}
+filter_by_weight <- function(data, weight_threshold) {
+  filtered_data <- data %>%
+    filter(animal_weight >= weight_threshold)
+  return(filtered_data)
+}
+
+result <- filter_by_weight(knz_bison, 500)
+
+print(result)
+
+```
+
+
+3.  Create a boxplot showing weight distribution between male and female bison, and then conduct a t-test to see if weight is significantly difference between males and females.
+```{r}
+ggplot(knz_bison, aes(x = animal_sex, y = animal_weight)) +
+  geom_boxplot()
+```
+
+```{r}
+#I know this one is not right at all but I wanted to add some code
+knz_bison %>% 
+  select(animal_weight, animal_sex) %>%
+  t.test(animal_weight ~ animal_sex, var.equal = FALSE, detailed = TRUE)
 ```
 
 
